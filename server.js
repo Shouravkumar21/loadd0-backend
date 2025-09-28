@@ -18,16 +18,31 @@ try {
 
 const app = express();
 const server = http.createServer(app);
+
+const allowedOrigins = [
+  process.env.FRONTEND_URL, // e.g., https://your-frontend-domain.com
+  'http://localhost:3000', // For local development
+  'http://localhost:3001', // If applicable
+  // Add other allowed frontend domains here
+].filter(Boolean); // Remove undefined entries
+
 const io = new Server(server, { 
   cors: { 
-    origin: true, 
+    origin: allowedOrigins, // Use the same allowedOrigins array
     methods: ['GET', 'POST'],
     credentials: true 
   } 
 });
 
 app.use(cors({
-  origin: true,
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS'));
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
