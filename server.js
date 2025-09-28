@@ -22,7 +22,8 @@ const server = http.createServer(app);
 const allowedOrigins = [
   process.env.FRONTEND_URL, // e.g., https://your-frontend-domain.com
   'http://localhost:3000', // For local development
-  'http://localhost:3001', // If applicable
+  'http://localhost:3001'
+  'https://load3-frontend.vercel.app', // If applicable
   // Add other allowed frontend domains here
 ].filter(Boolean); // Remove undefined entries
 
@@ -726,3 +727,4 @@ const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
   console.log(`Backend running on http://localhost:${PORT}`);
 });
+
