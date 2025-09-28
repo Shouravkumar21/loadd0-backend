@@ -1,4 +1,3 @@
-
 require('dotenv').config();
 
 const express = require('express');
@@ -19,11 +18,17 @@ try {
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: '*' } });
+const io = new Server(server, { 
+  cors: { 
+    origin: true, 
+    methods: ['GET', 'POST'],
+    credentials: true 
+  } 
+});
 
 app.use(cors({
-  origin: '*',
-  credentials: false,
+  origin: true,
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
